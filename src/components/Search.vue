@@ -63,6 +63,11 @@ export default {
   },
   methods: {
     async apply() {
+      // <컴포넌트 끼리 데이터 주고 받기>
+      // 부모 자식 간의 데이터 주고 받기 : props, emits 등
+      // 상위 하위 간의 데이터 주고 받기 : provide, inject 등
+      // 형제 간의 데이터 주고 받기 (Search 컴포넌트에서 찾은 res 데이터를 MovieList 컴포넌트에 전달하여 display 해야 함, Search와 MovieList는 형제 관계) : Vuex(중앙 집중식 상태 관리 패턴) 라이브러리 (Store)
+
       // async, await : 비동기 처리
       // Search movies 기능
       const OMDB_API_KEY = "7035c60c"; // 제공받은 키, 개인적으로 하려면 http://www.omdbapi.com/ 홈페이지의 API Key 에서 발급
