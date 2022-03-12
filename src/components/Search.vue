@@ -1,10 +1,12 @@
 <template>
   <div class="container">
+    <!-- enter key 눌러도 apply 함수 호출되도록! -->
     <input
       v-model="title"
       class="form-control"
       type="text"
       placeholder="Search for Movies, Series & more"
+      @keyup.enter="apply"
     />
     <div class="selects">
       <!-- $data는 script 태그 내의 data() 객체 내의 title, type, filters 등과 같은 속성에 접근 가능한 문법이다. -->
@@ -24,10 +26,12 @@
         </option>
       </select>
     </div>
+    <button class="btn btn-primary" @click="apply">Apply</button>
   </div>
 </template>
 
 <script>
+import axios from "axios"; // npm i axios 필요
 export default {
   data() {
     return {
@@ -57,6 +61,17 @@ export default {
       ],
     };
   },
+  methods: {
+    async apply() {
+      // async, await : 비동기 처리
+      // Search movies 기능
+      const OMDB_API_KEY = "7035c60c"; // 제공받은 키, 개인적으로 하려면 http://www.omdbapi.com/ 홈페이지의 API Key 에서 발급
+      const res = await axios.get(
+        `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${this.title}&type=${this.type}&y=${this.year}&page=1`
+      );
+      console.log(res);
+    },
+  },
 };
 </script>
 
@@ -82,6 +97,12 @@ export default {
         margin-right: 0;
       }
     }
+  }
+  .btn {
+    width: 120px;
+    height: 50px;
+    font-weight: 700;
+    flex-shrink: 0; // btn의 width가 120px보다 작아지지 않도록
   }
 }
 </style>
