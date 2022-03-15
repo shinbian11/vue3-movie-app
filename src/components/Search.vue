@@ -31,7 +31,6 @@
 </template>
 
 <script>
-import axios from "axios"; // npm i axios 필요
 export default {
   data() {
     return {
@@ -62,19 +61,25 @@ export default {
     };
   },
   methods: {
-    async apply() {
-      // <컴포넌트 끼리 데이터 주고 받기>
-      // 부모 자식 간의 데이터 주고 받기 : props, emits 등
-      // 상위 하위 간의 데이터 주고 받기 : provide, inject 등
-      // 형제 간의 데이터 주고 받기 (Search 컴포넌트에서 찾은 res 데이터를 MovieList 컴포넌트에 전달하여 display 해야 함, Search와 MovieList는 형제 관계) : Vuex(중앙 집중식 상태 관리 패턴) 라이브러리 (Store)
+    // <컴포넌트 끼리 데이터 주고 받기>
+    // 부모 자식 간의 데이터 주고 받기 : props, emits 등
+    // 상위 하위 간의 데이터 주고 받기 : provide, inject 등
+    // 형제 간의 데이터 주고 받기 (Search 컴포넌트에서 찾은 res 데이터를 MovieList 컴포넌트에 전달하여 display 해야 함, Search와 MovieList는 형제 관계) : Vuex(중앙 집중식 상태 관리 패턴) 라이브러리 (Store)
 
-      // async, await : 비동기 처리
-      // Search movies 기능
-      const OMDB_API_KEY = "7035c60c"; // 제공받은 키, 개인적으로 하려면 http://www.omdbapi.com/ 홈페이지의 API Key 에서 발급
-      const res = await axios.get(
-        `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${this.title}&type=${this.type}&y=${this.year}&page=1`
-      );
-      console.log(res);
+    async apply() {
+      // store 에서 actions를 호출 : dispatch
+      // store 에서 mutations를 호출 : commit
+      this.$store.dispatch("movie/searchMovies", {
+        title: this.title,
+        type: this.type,
+        number: this.number,
+        year: this.year,
+      }); // 첫번째 인수에 movie/ 를 적은 이유 : store의 index.js 에서 movie.js의 module명을 movie 라고 했으므로
+      // 첫번째 인수에 searchMovies를 적은 이유 : movie.js의 actions 내의 searchMovies 메서드 실행하려고!
+      // 두번째 인수는 객체이며, searchMovies로 보낼 인수이다.
+
+      // 이 파일에서 양방향 바인딩된 title, type, number, year 변수를 movie.js 파일의 searchMovies 메서드로 보내고,
+      // searchMovies 메서드에서는 this를 사용하지 않고, 바로 변수명을 이용해서 참조해서 사용할 수 있다.
     },
   },
 };

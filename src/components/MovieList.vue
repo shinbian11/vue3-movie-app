@@ -1,17 +1,22 @@
 <template>
   <div class="container">
     <div class="inner">
-      <MovieItem v-for="movie in movies" :key="movie.imdbID" />
+      <!-- v-for="movie in movies" 에서 movies는 computed 의 movies (배열 데이터) 이다. -->
+      <MovieItem v-for="movie in movies" :key="movie.imdbID" :movie="movie" />
     </div>
   </div>
 </template>
 <script>
 import MovieItem from "~/components/MovieItem";
 export default {
-  data() {
-    return {
-      movies: [],
-    };
+  components: {
+    MovieItem,
+  },
+  computed: {
+    // 반응성이 유지된 데이터를 가져와야 하므로, computed에 정의한 것!
+    movies() {
+      return this.$store.state.movie.movies;
+    },
   },
 };
 </script>
