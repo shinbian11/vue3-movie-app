@@ -13,6 +13,7 @@ export default {
   components: {
     Headline,
     Search,
+    MovieList,
   },
 };
 </script>
