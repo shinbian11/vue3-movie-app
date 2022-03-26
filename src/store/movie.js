@@ -10,7 +10,7 @@ export default {
   }),
   getters: {},
   mutations: {
-    // state의 데이터를 변경하는 건 mutations에서만 가능!
+    // state의 데이터를 변경하는 건 mutations에서만 가능!!
     // state의 데이터가 너무 많으면, 일일히 갱신하는데 어려움!
     // 그래서 updateState 와 같은 메서드가 필요!
     // updateState 메서드 : 통합적으로 state의 속성들을 갱신하는 메서드
