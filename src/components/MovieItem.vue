@@ -1,5 +1,5 @@
 <template>
-  <div>{{ movie.imdbID }} {{ movie.Title }}</div>
+  <div>{{ movie.imdbID }}</div>
 </template>
 <script>
 export default {
