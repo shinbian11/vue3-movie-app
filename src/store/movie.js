@@ -1,4 +1,6 @@
 import axios from "axios"; // npm i axios 필요
+import _uniqBy from "lodash/uniqBy"; // https://lodash.com/docs/4.17.15#uniqBy (영화 검색 데이터 중복 처리)
+
 export default {
   namespaced: true,
   state: () => ({
@@ -36,7 +38,7 @@ export default {
 
       const { Search, totalResults } = res.data;
       commit("updateState", {
-        movies: Search,
+        movies: _uniqBy(Search, "imdbID"), // imdbID를 기준으로 중복을 제거한 데이터만 movies에 저장된다. (imdbID가 동일한 데이터들이 중복되어 검색되는 경우가 있으므로!)
       }); // 두 번째 객체 데이터가 updateState 메서드의 payload로 들어간다.
 
       const total = parseInt(totalResults, 10);
@@ -51,7 +53,10 @@ export default {
           );
           const { Search } = res.data;
           commit("updateState", {
-            movies: [...state.movies, ...Search], // 기존의 movies 데이터에 들어가 있는 데이터에다가 이번에 추가된 데이터를 삽입
+            movies: [
+              ...state.movies, // 전개 연산자 사용
+              ..._uniqBy(Search, "imdbID"), // imdbID를 기준으로 중복을 제거한 데이터만 movies에 저장된다. (imdbID가 동일한 데이터들이 중복되어 검색되는 경우가 있으므로!)
+            ], // 기존의 movies 데이터에 들어가 있는 데이터(state.movies)에다가 이번에 추가된 데이터(_uniqBy(Search, "imdbID"))를 삽입
           });
         }
       }
