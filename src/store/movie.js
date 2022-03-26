@@ -24,7 +24,7 @@ export default {
     },
   },
   actions: {
-    async searchMovies({ commit }, payload) {
+    async searchMovies({ state, commit }, payload) {
       // payload : 받아오는 데이터
       const { title, type, number, year } = payload;
       // async, await : 비동기 처리
@@ -38,6 +38,23 @@ export default {
       commit("updateState", {
         movies: Search,
       }); // 두 번째 객체 데이터가 updateState 메서드의 payload로 들어간다.
+
+      const total = parseInt(totalResults, 10);
+      const pageLength = Math.ceil(total / 10); // 총 268개의 데이터가 검색되었다면, 1 page에 10개라면 총 27 page 이다
+
+      // 추가 요청!
+      if (pageLength > 1) {
+        for (let page = 2; page <= pageLength; page += 1) {
+          if (page > number / 10) break;
+          const res = await axios.get(
+            `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=${page}`
+          );
+          const { Search } = res.data;
+          commit("updateState", {
+            movies: [...state.movies, ...Search], // 기존의 movies 데이터에 들어가 있는 데이터에다가 이번에 추가된 데이터를 삽입
+          });
+        }
+      }
     },
   },
 };
