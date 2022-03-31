@@ -5,7 +5,7 @@ export default {
   namespaced: true,
   state: () => ({
     movies: [],
-    message: "",
+    message: "Search for the movie title!", // 기본 메세지
     loading: false,
   }),
   getters: {},
@@ -28,8 +28,22 @@ export default {
   actions: {
     // payload : 받아오는 데이터
     // Search movies 기능
+    // async, await : 비동기 처리
     async searchMovies({ state, commit }, payload) {
-      // async, await : 비동기 처리
+      // 사용자가 searchMovies 메서드를 동시에 여러번 실행하는 것을 방지하는 코드!
+      // 여러 번 누르면 loading 변수가 finally 구문에 가서 false로 바뀌기도 전에 또 메서드가 실행될 수 있으니,
+      // 메서드가 시작되었는데 loading 변수가 true면 이 메서드 실행을 그만두게끔 한다!
+      if (state.loading) return;
+
+      commit("updateState", {
+        // 기본 메세지 값인  "Search for the movie title!" 가 처음에는 보이게 하고,
+        // 검색이 시작된 이후에는 commit을 통해 message를 빈 문자열로 비운다.
+        message: "",
+        loading: true, // 검색이 진행되는 동안 loading을 true로 바꿔야 한다.
+        // 여기는 검색이 시작되는 부분이므로, 여기서 일단 loading 변수를 true로 변경!
+        // searchMovies 메소드가 끝나는 부분에서 loading 변수를 다시 false로 되돌려야 한다.
+      });
+
       try {
         const res = await _fetchMovie({
           ...payload,
@@ -67,6 +81,11 @@ export default {
           // movies 는 빈 배열로 초기화, 오류 메세지만 보내서 출력한다.
           movies: [],
           message, // message: message,
+        });
+      } finally {
+        // 검색의 성공여부에 상관없이 검색이 끝났으면 loading 변수를 다시 false로 되돌려놓아야 한다.
+        commit("updateState", {
+          loading: false, // 검색이 끝나는 구간! 여기서부터는 loading 변수를 다시 false로!
         });
       }
     },
