@@ -6,7 +6,9 @@
         {{ message }}
       </div>
       <!-- v-for="movie in movies" 에서 movies는 computed 의 movies (배열 데이터) 이다. -->
-      <MovieItem v-for="movie in movies" :key="movie.imdbID" :movie="movie" />
+      <div class="movies">
+        <MovieItem v-for="movie in movies" :key="movie.imdbID" :movie="movie" />
+      </div>
     </div>
   </div>
 </template>
@@ -27,3 +29,13 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.container {
+  .movies {
+    display: flex;
+    flex-wrap: wrap; // 내용이 넘치면 다음 줄로 넘기기
+    justify-content: center;
+  }
+}
+</style>
