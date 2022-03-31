@@ -1,6 +1,19 @@
 // Default variable overrided
 $primary: #fdc000;
 
+// https://getbootstrap.com/docs/5.1/layout/containers/
+// 기본으로 지정해주는 값을 사용자의 입맛에 맞게 수정함
+$container-max-widths: (
+  sm: 540px,
+  md: 704px,
+  // 원래 720px
+  lg: 924px,
+  // 원래 960px
+  xl: 1140px,
+  xxl: 1364px,
+  // 원래 1320px
+);
+
 // Required
 @import "../../node_modules/bootstrap/scss/functions";
 @import "../../node_modules/bootstrap/scss/variables";
