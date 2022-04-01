@@ -1,4 +1,5 @@
 <template>
+  <!-- RouterLink, router-link : a 태그와 비슷한 역할을 한다. -->
   <RouterLink to="/" class="logo"> <span>OMDbAPI</span>.COM </RouterLink>
 </template>
 
